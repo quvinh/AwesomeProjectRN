@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { colors } from "../constants"
 
 function UIButton(props) {
+    const { onPress, title, isSelected } = props
     return <TouchableOpacity 
-    onPress={props.onPress}
+    onPress={onPress}
     style={{
-        borderColor: 'white',
+        borderColor: colors.white,
         borderWidth: 1,
         borderRadius: 5,
         height: 45,
@@ -14,9 +16,9 @@ function UIButton(props) {
         marginVertical: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: isSelected ? colors.white : null
     }}>
-        <Icon
+        {isSelected && <Icon
             name={'check-circle'}
             size={20}
             style={{
@@ -24,10 +26,11 @@ function UIButton(props) {
                 position: 'absolute',
                 left: 10,
                 top: 10,
-            }} />
+            }} />}
         <Text style={{
-            color: 'orange',
-        }}>{props.title}</Text>
+            color: isSelected ? colors.orange : colors.white,
+            fontWeight: 'bold'
+        }}>{title}</Text>
     </TouchableOpacity>
 }
 
