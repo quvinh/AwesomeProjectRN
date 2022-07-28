@@ -12,6 +12,7 @@ function Login(props) {
     const [errorPassword, setErrorPassword] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoginOK, setIsLoginOK] = useState(false);
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardIsShow(true)
@@ -53,11 +54,12 @@ function Login(props) {
             <Text style={{
                 fontSize: 14,
                 color: colors.orange,
-            }}>Email: <Text>{errorEmail}</Text></Text>
+            }}>Email: <Text style={{color: 'red', fontStyle: 'italic'}}>{errorEmail}</Text></Text>
             <TextInput placeholder="example@gmail.com"
-                onChange={(text) => {
-                    setErrorEmail(isValidEmail(text) == true ? '' : 'Email not is correct format.')
+                onChangeText={(text) => {
+                    setErrorEmail(isValidEmail(text) ? '' : '(*) Email not is correct format.')
                     setEmail(text)
+                    isValidEmail(text) && isValidPassword(password) ? setIsLoginOK(true) : setIsLoginOK(false)
                 }}
                 placeholderTextColor={colors.placeholder} />
             <View style={{
@@ -71,11 +73,12 @@ function Login(props) {
             <Text style={{
                 fontSize: 14,
                 color: colors.orange,
-            }}>Password: <Text>{errorPassword}</Text></Text>
+            }}>Password: <Text style={{color: 'red', fontStyle: 'italic'}}>{errorPassword}</Text></Text>
             <TextInput placeholder="Enter your password"
-                onChange={(text) => {
-                    setErrorPassword(isValidPassword(text) == true ? '' : 'Password must be at least 3 characters.')
+                onChangeText={(text) => {
+                    setErrorPassword(isValidPassword(text) ? '' : '(*) Password must be at least 6 characters.')
                     setPassword(text)
+                    isValidEmail(email) && isValidPassword(text) ? setIsLoginOK(true) : setIsLoginOK(false)
                 }}
                 secureTextEntry={true}
                 placeholderTextColor={colors.placeholder} />
@@ -94,7 +97,7 @@ function Login(props) {
             justifyContent: 'center',
         }}>
             <TouchableOpacity style={{
-                backgroundColor: colors.orange,
+                backgroundColor: isLoginOK ? colors.orange : colors.inactive,
                 justifyContent: 'center',
                 alignItems: 'center',
                 alignSelf: 'center',
